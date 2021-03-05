@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
      * TestLayout
      * ㄴ TestView(1)
      * ㄴ TestView(2)
+     * ㄴ StubView
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,47 @@ class MainActivity : AppCompatActivity() {
          * TestLayout onMeasure called
          *
          * 자식뷰인 TestView(1)의 사이즈 변경이 TestLayout, TestView(2)에도 영향을 끼침
+         */
+    }
+
+    fun showStub(v : View) {
+        /**
+         * stub이 inflate되지 않았을 때,
+         * ViewStub이 xml에 아예 없는 듯 onMeasure, onLayout이 호출되지 않음
+         */
+        Log.d("MainActivity log", "showStub called")
+        stub.inflate()
+        /**
+         * [stub이 가장 밑에 위치] stub이 inflate되었을 때,
+         *
+         * TestLayout onMeasure called
+         * StubView onMeasure called
+         * TestLayout onMeasure called
+         * TestLayout onMeasure called
+         *
+         * TestLayout onLayout called
+         * TestView(1) onLayout called
+         * TestView(2) onLayout called
+         * StubView onLayout called
+         * TestLayout onLayout called
+         */
+
+        /**
+         * [stub이 두 TestView 사이로 이동] stub이 inflate되었을 때,
+         *
+         * TestLayout onMeasure called
+         * StubView onMeasure called
+         * TestLayout onMeasure called
+         * TestLayout onMeasure called
+         * TestView(2) onMeasure called // ** 추가! LinearLayout(orientation = vertical)이라 StubView inflate 영향이 부모뷰, 그 밑에 있는 뷰까지 전파됨
+         * TestLayout onMeasure called
+         * TestLayout onMeasure called
+         *
+         * TestLayout onLayout called
+         * TestView(1) onLayout called
+         * StubView onLayout called
+         * TestView(2) onLayout called
+         * TestLayout onLayout called
          */
     }
 }
