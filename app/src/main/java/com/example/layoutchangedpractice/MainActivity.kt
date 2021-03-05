@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
          * 따라서, 이렇게 뷰가 그려지기 전에 inflate 할 거 아니면 ViewStub을 사용하는게 오히려 좋지 않은 선택이 될거 같음.
          * 그런 경우엔 차라리 그냥 뷰를 넣어두고 visibility 값을 설정하는 게 더 효율적임!
          */
+        // test_view1.visibility = View.VISIBLE
     }
 
     fun changeSize(v : View) {
