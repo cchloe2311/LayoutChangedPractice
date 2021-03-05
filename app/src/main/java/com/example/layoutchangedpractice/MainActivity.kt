@@ -19,6 +19,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        stub.inflate()
+        /**
+         * 아예 뷰가 다 그려지기 전에 stub inflate() 시,
+         * 아예 xml 내에 해당 뷰를 넣은것과 같은 방식으로 onMeasure, onLayout 호출
+         *
+         * 따라서, 이렇게 뷰가 그려지기 전에 inflate 할 거 아니면 ViewStub을 사용하는게 오히려 좋지 않은 선택이 될거 같음.
+         * 그런 경우엔 차라리 그냥 뷰를 넣어두고 visibility 값을 설정하는 게 더 효율적임!
+         */
     }
 
     fun changeSize(v : View) {
