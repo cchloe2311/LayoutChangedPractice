@@ -39,6 +39,13 @@
         android:layout_height="60dp"
         android:onClick="showStub"/>
 
+    <Button
+        android:text="Show gone view"
+        android:id="@+id/btn_show_gone_view"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:onClick="showGoneView"/>
+
 <!--    <ViewStub-->
 <!--        android:id="@+id/stub"-->
 <!--        android:layout="@layout/stub_view"-->

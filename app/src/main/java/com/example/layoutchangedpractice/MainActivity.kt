@@ -9,13 +9,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    /**
-     * View Tree 구조
-     * TestLayout
-     * ㄴ TestView(1)
-     * ㄴ TestView(2)
-     * ㄴ StubView
-     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,9 +19,9 @@ class MainActivity : AppCompatActivity() {
          * 아예 xml 내에 해당 뷰를 넣은것과 같은 방식으로 onMeasure, onLayout 호출
          *
          * 따라서, 이렇게 뷰가 그려지기 전에 inflate 할 거 아니면 ViewStub을 사용하는게 오히려 좋지 않은 선택이 될거 같음.
-         * 그런 경우엔 차라리 그냥 뷰를 넣어두고 visibility 값을 설정하는 게 더 효율적임!
          */
-        test_view1.visibility = View.VISIBLE
+
+        // test_view1.visibility = View.VISIBLE
         /**
          * [xml 내에 visibility = gone으로 하고 뷰가 그려지기 전에 VISIBLE로 바꾸는 방법]
          * stub.inflate() 동일하게 동작함
@@ -37,12 +30,23 @@ class MainActivity : AppCompatActivity() {
          * stub은 inflate되어야 클래스가 로드됨 (memeory에 로드)
          * 하지만 visibility로 설정할 경우엔 레이아웃 내 위치를 잡진 않아도 클래스가 로드되어 memory를 잡아먹음
          */
+
+        /**
+         * - 뷰가 그려지기 전에 inflate
+         * - 특수한 경우에만 해당 뷰를 보여줌
+         * => 이런 상황에서는 확실히 ViewStub이 좋은 선택지가 됨!
+         */
     }
 
     fun changeSize(v : View) {
         Log.d("MainActivity log", "changeSize called")
         test_view1.layoutParams = LinearLayout.LayoutParams(400, 400) // TestView(1) size 변경
         /**
+         * View Tree 구조
+         * TestLayout
+         * ㄴ TestView(1)
+         * ㄴ TestView(2)
+         *
          * TestLayout onMeasure called
          * TestView(1) onMeasure called
          * TestLayout onMeasure called
@@ -64,6 +68,12 @@ class MainActivity : AppCompatActivity() {
         /**
          * [stub이 가장 밑에 위치] stub이 inflate되었을 때,
          *
+         * View Tree 구조
+         * TestLayout
+         * ㄴ TestView(1)
+         * ㄴ TestView(2)
+         * ㄴ StubView
+         *
          * TestLayout onMeasure called
          * StubView onMeasure called
          * TestLayout onMeasure called
@@ -79,6 +89,12 @@ class MainActivity : AppCompatActivity() {
         /**
          * [stub이 두 TestView 사이로 이동] stub이 inflate되었을 때,
          *
+         * View Tree 구조
+         * TestLayout
+         * ㄴ TestView(1)
+         * ㄴ StubView
+         * ㄴ TestView(2)
+         *
          * TestLayout onMeasure called
          * StubView onMeasure called
          * TestLayout onMeasure called
@@ -90,6 +106,38 @@ class MainActivity : AppCompatActivity() {
          * TestLayout onLayout called
          * TestView(1) onLayout called
          * StubView onLayout called
+         * TestView(2) onLayout called
+         * TestLayout onLayout called
+         */
+    }
+
+    fun showGoneView(v: View) {
+        test_view1.visibility = View.VISIBLE
+        /**
+         * [gone으로 설정된 view를 다 그려지고나서 visible으로 설정할 경우]
+         *
+         * View Tree 구조
+         * TestLayout
+         * ㄴ TestView(1) (init visibility = gone)
+         * ㄴ StubView
+         * ㄴ TestView(2)
+         *
+         * TestLayout onMeasure called
+         * TestView(1) onMeasure called
+         * TestLayout onMeasure called
+         * TestLayout onMeasure called
+         * StubView onMeasure called
+         * TestLayout onMeasure called
+         * TestLayout onMeasure called
+         * TestView(2) onMeasure called
+         * TestLayout onMeasure called
+         * TestLayout onMeasure called
+         *
+         * TestLayout onLayout called
+         * TestView(1) onLayout called
+         * TestLayout onLayout called
+         * StubView onLayout called
+         * TestLayout onLayout called
          * TestView(2) onLayout called
          * TestLayout onLayout called
          */
